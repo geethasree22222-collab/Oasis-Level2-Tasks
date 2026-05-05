@@ -673,4 +673,27 @@
 
   function render() {
     const pending = tasks.filter(t => !t.done);
-    const done    = tasks.filter(t => t.done)
+    const done    = tasks.filter(t => t.done);
+    const pList = document.getElementById('pendingList');
+    const dList = document.getElementById('doneList');
+    
+    pList.innerHTML = '';
+    dList.innerHTML = '';
+
+    pending.forEach(t => pList.appendChild(makeItem(t)));
+    done.forEach(t => dList.appendChild(makeItem(t)));
+
+    if (pending.length === 0) pList.innerHTML = '<div class="empty">No pending tasks.</div>';
+    if (done.length === 0) dList.innerHTML = '<div class="empty">No completed tasks yet.</div>';
+
+    document.getElementById('statTotal').textContent = tasks.length;
+    document.getElementById('statPending').textContent = pending.length;
+    document.getElementById('statDone').textContent = done.length;
+    document.getElementById('pendingBadge').textContent = pending.length;
+    document.getElementById('doneBadge').textContent = done.length;
+  }
+
+  render();
+</script>
+</body>
+</html>
