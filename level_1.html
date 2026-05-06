@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Temperature Converter</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -27,579 +29,104 @@
       font-family: 'Rajdhani', sans-serif;
       color: var(--text);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      overflow-x: hidden;
-    }
-
-    /* Animated background grid */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,200,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,200,255,0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
-      animation: gridMove 20s linear infinite;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    @keyframes gridMove {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(40px); }
     }
 
     .container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
       max-width: 520px;
-    }
-
-    /* Header */
-    .header {
-      text-align: center;
-      margin-bottom: 36px;
-    }
-
-    .header .label {
-      font-family: 'Orbitron', monospace;
-      font-size: 11px;
-      letter-spacing: 6px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.1s;
-    }
-
-    .header h1 {
-      font-family: 'Orbitron', monospace;
-      font-size: clamp(24px, 5vw, 38px);
-      font-weight: 900;
-      line-height: 1.1;
-      background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, #fff 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.2s;
-    }
-
-    .header .subtitle {
-      font-size: 14px;
-      color: var(--muted);
-      letter-spacing: 2px;
-      margin-top: 8px;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.35s;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Card */
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 36px 32px;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.45s;
-      box-shadow: 0 0 60px rgba(0,200,255,0.07), inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    }
-
-    /* Thermometer icon area */
-    .thermo-icon {
-      text-align: center;
-      font-size: 48px;
-      margin-bottom: 28px;
-      animation: pulse 3s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.08); }
-    }
-
-    /* Input section */
-    .input-group {
-      margin-bottom: 20px;
-    }
-
-    .input-group label {
-      display: block;
-      font-family: 'Orbitron', monospace;
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .input-group input {
       width: 100%;
-      background: rgba(0,200,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 18px;
-      font-family: 'Orbitron', monospace;
-      font-size: 22px;
-      font-weight: 700;
-      color: #fff;
-      outline: none;
-      transition: border-color 0.3s, box-shadow 0.3s;
-      text-align: center;
-      letter-spacing: 2px;
     }
 
-    .input-group input:focus {
-      border-color: var(--accent);
-      box-shadow: var(--glow);
-    }
-
-    .input-group input::placeholder {
-      color: var(--muted);
-      font-size: 14px;
-      letter-spacing: 1px;
-    }
-
-    /* Error */
-    .error-msg {
-      font-size: 12px;
-      color: #ff4d6d;
-      margin-top: 6px;
-      min-height: 16px;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Unit selector */
-    .unit-label {
-      font-family: 'Orbitron', monospace;
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .unit-options {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .unit-btn {
-      flex: 1;
-      padding: 12px 8px;
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--muted);
-      font-family: 'Orbitron', monospace;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.25s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .unit-btn .unit-symbol {
-      font-size: 20px;
-      font-weight: 900;
-    }
-
-    .unit-btn .unit-name {
-      font-size: 9px;
-      letter-spacing: 2px;
-      opacity: 0.7;
-    }
-
-    .unit-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: rgba(0,200,255,0.05);
-    }
-
-    .unit-btn.active {
-      border-color: var(--accent);
-      background: rgba(0,200,255,0.1);
-      color: #fff;
-      box-shadow: var(--glow);
-    }
-
-    .unit-btn.active .unit-symbol {
-      color: var(--accent);
-    }
-
-    /* Convert button */
-    .convert-btn {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, var(--accent), #0080cc);
-      border: none;
-      border-radius: 12px;
-      color: #000;
-      font-family: 'Orbitron', monospace;
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.25s;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 28px;
-    }
-
-    .convert-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
-      opacity: 0;
-      transition: opacity 0.25s;
-    }
-
-    .convert-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0,200,255,0.4);
-    }
-
-    .convert-btn:hover::before { opacity: 1; }
-    .convert-btn:active { transform: translateY(0); }
-
-    .convert-btn.loading {
-      pointer-events: none;
-      opacity: 0.7;
-    }
-
-    /* Result section */
-    .result-section {
-      display: none;
-      animation: fadeUp 0.4s ease forwards;
-    }
-
-    .result-section.show { display: block; }
-
-    .result-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-      margin-bottom: 24px;
-    }
-
-    .result-label {
-      font-family: 'Orbitron', monospace;
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: var(--accent);
+    .back {
       text-align: center;
       margin-bottom: 16px;
     }
 
-    .result-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-    }
-
-    .result-card {
-      background: rgba(0,0,0,0.3);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 10px;
-      text-align: center;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .result-card.highlight {
-      border-color: var(--accent2);
-      box-shadow: var(--glow2);
-      background: rgba(255,107,53,0.07);
-    }
-
-    .result-card.highlight::before {
-      content: 'RESULT';
-      position: absolute;
-      top: 6px; right: 6px;
-      font-family: 'Orbitron', monospace;
-      font-size: 7px;
-      letter-spacing: 1px;
-      color: var(--accent2);
-      opacity: 0.8;
-    }
-
-    .result-card .rc-symbol {
-      font-family: 'Orbitron', monospace;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 2px;
-      margin-bottom: 6px;
-    }
-
-    .result-card .rc-value {
-      font-family: 'Orbitron', monospace;
-      font-size: clamp(14px, 3vw, 20px);
-      font-weight: 900;
-      color: #fff;
-      line-height: 1;
-    }
-
-    .result-card.highlight .rc-value {
-      color: var(--accent2);
-    }
-
-    .result-card .rc-unit {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
-      letter-spacing: 1px;
-    }
-
-    /* Description below each card */
-    .temp-description {
-      text-align: center;
-      margin-top: 16px;
-      padding: 12px 16px;
-      background: rgba(127,255,107,0.05);
-      border: 1px solid rgba(127,255,107,0.15);
-      border-radius: 10px;
-      font-size: 13px;
-      color: var(--accent3);
-      letter-spacing: 1px;
-      font-weight: 600;
-    }
-
-    /* Footer */
-    .footer {
-      text-align: center;
-      margin-top: 28px;
+    .back a {
+      color: var(--accent);
+      font-family: Orbitron, monospace;
       font-size: 12px;
-      color: var(--muted);
       letter-spacing: 2px;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.6s;
+      text-decoration: none;
     }
 
-    .footer span { color: var(--accent); }
-
-    /* Reset link */
-    .reset-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 13px;
-      letter-spacing: 2px;
-      cursor: pointer;
-      text-decoration: underline;
-      margin-top: 12px;
-      display: block;
-      width: 100%;
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
       text-align: center;
-      transition: color 0.2s;
     }
 
-    .reset-btn:hover { color: var(--accent); }
+    h1 {
+      font-family: Orbitron, monospace;
+      margin-bottom: 20px;
+    }
 
-    /* Responsive */
-    @media (max-width: 420px) {
-      .card { padding: 24px 18px; }
-      .result-cards { grid-template-columns: 1fr; }
+    input {
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #000;
+      color: white;
+      text-align: center;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      border: none;
+      font-family: Orbitron, monospace;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
     }
   </style>
 </head>
+
 <body>
 
 <div class="container">
-  <div class="header">
-    <div class="label">OASIS INFOBYTE — Level 1 Task 3</div>
-    <h1>TEMP<br>CONVERTER</h1>
-    <div class="subtitle">CELSIUS · FAHRENHEIT · KELVIN</div>
+
+  <!-- BACK LINK -->
+  <div class="back">
+    <a href="index.html">← BACK TO HOME</a>
   </div>
 
   <div class="card">
-    <div class="thermo-icon">🌡️</div>
+    <h1>Temperature Converter</h1>
 
-    <!-- Input -->
-    <div class="input-group">
-      <label>Enter Temperature</label>
-      <input type="number" id="tempInput" placeholder="e.g.  100" />
-      <div class="error-msg" id="errorMsg"></div>
-    </div>
+    <input type="number" id="temp" placeholder="Enter Celsius" />
 
-    <!-- Unit selector -->
-    <div class="unit-label">Select Input Unit</div>
-    <div class="unit-options">
-      <button class="unit-btn active" data-unit="C" onclick="selectUnit(this)">
-        <span class="unit-symbol">°C</span>
-        <span class="unit-name">CELSIUS</span>
-      </button>
-      <button class="unit-btn" data-unit="F" onclick="selectUnit(this)">
-        <span class="unit-symbol">°F</span>
-        <span class="unit-name">FAHRENHEIT</span>
-      </button>
-      <button class="unit-btn" data-unit="K" onclick="selectUnit(this)">
-        <span class="unit-symbol">K</span>
-        <span class="unit-name">KELVIN</span>
-      </button>
-    </div>
+    <button onclick="convert()">CONVERT</button>
 
-    <!-- Convert button -->
-    <button class="convert-btn" onclick="convert()">⚡ CONVERT</button>
-
-    <!-- Result -->
-    <div class="result-section" id="resultSection">
-      <div class="result-divider"></div>
-      <div class="result-label">▸ CONVERTED TEMPERATURES</div>
-      <div class="result-cards">
-        <div class="result-card" id="card-C">
-          <div class="rc-symbol">°C</div>
-          <div class="rc-value" id="val-C">—</div>
-          <div class="rc-unit">CELSIUS</div>
-        </div>
-        <div class="result-card" id="card-F">
-          <div class="rc-symbol">°F</div>
-          <div class="rc-value" id="val-F">—</div>
-          <div class="rc-unit">FAHRENHEIT</div>
-        </div>
-        <div class="result-card" id="card-K">
-          <div class="rc-symbol">K</div>
-          <div class="rc-value" id="val-K">—</div>
-          <div class="rc-unit">KELVIN</div>
-        </div>
-      </div>
-      <div class="temp-description" id="tempDesc"></div>
-      <button class="reset-btn" onclick="reset()">↺ RESET</button>
-    </div>
+    <div class="result" id="result"></div>
   </div>
 
-  <div class="footer">
-    Built with <span>HTML · CSS · JS</span> &nbsp;|&nbsp; OASIS INFOBYTE INTERNSHIP
-  </div>
 </div>
 
 <script>
-  let selectedUnit = 'C';
-
-  function selectUnit(btn) {
-    document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedUnit = btn.dataset.unit;
-    // Hide result on unit change
-    document.getElementById('resultSection').classList.remove('show');
-    document.getElementById('errorMsg').textContent = '';
-  }
-
   function convert() {
-    const input = document.getElementById('tempInput').value.trim();
-    const errorEl = document.getElementById('errorMsg');
-
-    // Validate
-    if (input === '' || isNaN(input)) {
-      errorEl.textContent = '⚠ Please enter a valid number.';
-      document.getElementById('resultSection').classList.remove('show');
+    const c = document.getElementById("temp").value;
+    if (c === "") {
+      document.getElementById("result").innerText = "Enter a value";
       return;
     }
-
-    const val = parseFloat(input);
-
-    // Kelvin can't be below 0
-    if (selectedUnit === 'K' && val < 0) {
-      errorEl.textContent = '⚠ Kelvin cannot be negative (absolute zero = 0 K).';
-      document.getElementById('resultSection').classList.remove('show');
-      return;
-    }
-
-    errorEl.textContent = '';
-
-    let C, F, K;
-
-    if (selectedUnit === 'C') {
-      C = val;
-      F = (C * 9/5) + 32;
-      K = C + 273.15;
-    } else if (selectedUnit === 'F') {
-      F = val;
-      C = (F - 32) * 5/9;
-      K = C + 273.15;
-    } else {
-      K = val;
-      C = K - 273.15;
-      F = (C * 9/5) + 32;
-    }
-
-    // Display
-    document.getElementById('val-C').textContent = C.toFixed(2);
-    document.getElementById('val-F').textContent = F.toFixed(2);
-    document.getElementById('val-K').textContent = K.toFixed(2);
-
-    // Highlight result cards (not the input one)
-    ['C','F','K'].forEach(u => {
-      const card = document.getElementById('card-' + u);
-      card.classList.toggle('highlight', u !== selectedUnit);
-    });
-
-    // Description
-    const desc = getDescription(C);
-    document.getElementById('tempDesc').textContent = desc;
-
-    document.getElementById('resultSection').classList.remove('show');
-    void document.getElementById('resultSection').offsetWidth; // reflow for animation
-    document.getElementById('resultSection').classList.add('show');
+    const f = (c * 9/5) + 32;
+    document.getElementById("result").innerText =
+      c + "°C = " + f.toFixed(2) + "°F";
   }
-
-  function getDescription(celsius) {
-    if (celsius <= -273.15) return '🔵 Absolute Zero — the coldest possible temperature.';
-    if (celsius < -89) return '🥶 Colder than the coldest recorded temperature on Earth!';
-    if (celsius < 0) return '❄️ Below freezing — water turns to ice.';
-    if (celsius === 0) return '🧊 Exactly the freezing point of water.';
-    if (celsius < 20) return '🌤️ Cool temperature — a chilly day!';
-    if (celsius < 37) return '🌡️ Comfortable room/body temperature range.';
-    if (celsius < 60) return '🔥 Hot! Like a very warm day or a sauna.';
-    if (celsius < 100) return '♨️ Very hot — approaching boiling point of water.';
-    if (celsius === 100) return '💧 Exactly the boiling point of water (at sea level).';
-    return '🌋 Extreme heat — beyond boiling point of water!';
-  }
-
-  function reset() {
-    document.getElementById('tempInput').value = '';
-    document.getElementById('errorMsg').textContent = '';
-    document.getElementById('resultSection').classList.remove('show');
-    document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector('[data-unit="C"]').classList.add('active');
-    selectedUnit = 'C';
-  }
-
-  // Allow Enter key to trigger convert
-  document.getElementById('tempInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') convert();
-  });
 </script>
 
 </body>
