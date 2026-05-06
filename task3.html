@@ -53,7 +53,6 @@
       overflow: hidden;
     }
 
-    /* Soft radial orbs */
     .bg::before {
       content: '';
       position: absolute;
@@ -80,7 +79,6 @@
       66%       { transform: translate(-20px, 50px) scale(0.97); }
     }
 
-    /* Subtle grid lines */
     .bg-grid {
       position: fixed;
       inset: 0;
@@ -92,7 +90,6 @@
       pointer-events: none;
     }
 
-    /* Floating particles */
     .particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
 
     .particle {
@@ -119,7 +116,6 @@
       100% { transform: translateY(-102vh) translateX(30px); opacity: 0; }
     }
 
-    /* ── App ── */
     .app {
       position: relative;
       z-index: 2;
@@ -128,7 +124,6 @@
       padding: 44px 20px 90px;
     }
 
-    /* ── Header ── */
     .header {
       text-align: center;
       margin-bottom: 38px;
@@ -176,7 +171,6 @@
       font-weight: 300;
     }
 
-    /* ── Stats ── */
     .stats {
       display: grid;
       grid-template-columns: repeat(3,1fr);
@@ -219,7 +213,6 @@
       margin-top: 6px;
     }
 
-    /* ── Add Card ── */
     .add-card {
       background: var(--bg-card2);
       backdrop-filter: blur(24px);
@@ -302,7 +295,6 @@
 
     .error-msg { font-size: 12px; color: var(--neon-pink); margin-top: 8px; min-height: 16px; letter-spacing: .3px; }
 
-    /* ── Sections ── */
     .section {
       margin-bottom: 24px;
       animation: fadeUp .6s ease forwards .3s;
@@ -352,7 +344,6 @@
       border-radius: 14px;
     }
 
-    /* ── Task Item ── */
     .task-item {
       background: var(--bg-card);
       backdrop-filter: blur(18px);
@@ -491,7 +482,6 @@
     }
     .del-btn:hover { background: rgba(240,101,149,0.22); transform: scale(1.08); }
 
-    /* ── Footer ── */
     .footer {
       text-align: center;
       margin-top: 52px;
@@ -518,7 +508,6 @@
 </head>
 <body>
 
-<!-- Background layers -->
 <div class="bg"></div>
 <div class="bg-grid"></div>
 <div class="particles">
@@ -530,14 +519,12 @@
 
 <div class="app">
 
-  <!-- Header -->
   <div class="header">
     <div class="badge">✦ OASIS INFOBYTE — Level 2 · Task 3 ✦</div>
     <h1>TASK<span class="hl">FLOW</span></h1>
     <p>Add tasks · Mark complete · Edit &amp; Delete · Auto timestamps</p>
   </div>
 
-  <!-- Stats -->
   <div class="stats">
     <div class="stat s-total">
       <div class="num" id="statTotal">0</div>
@@ -553,7 +540,6 @@
     </div>
   </div>
 
-  <!-- Add Task -->
   <div class="add-card">
     <div class="add-label">✦ Add New Task</div>
     <div class="input-row">
@@ -563,7 +549,6 @@
     <div class="error-msg" id="errorMsg"></div>
   </div>
 
-  <!-- Pending -->
   <div class="section">
     <div class="section-header">
       <div class="section-title s-title-pending">⏳ Pending Tasks</div>
@@ -572,7 +557,6 @@
     <div class="task-list" id="pendingList"></div>
   </div>
 
-  <!-- Completed -->
   <div class="section">
     <div class="section-header">
       <div class="section-title s-title-complete">✅ Completed Tasks</div>
@@ -674,6 +658,7 @@
   function render() {
     const pending = tasks.filter(t => !t.done);
     const done    = tasks.filter(t => t.done);
+    
     const pList = document.getElementById('pendingList');
     const dList = document.getElementById('doneList');
     
