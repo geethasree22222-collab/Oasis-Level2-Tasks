@@ -35,21 +35,19 @@
     }
 
     .container {
-      max-width: 520px;
       width: 100%;
+      max-width: 500px;
     }
 
-    .back {
+    .header {
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 30px;
     }
 
-    .back a {
+    .header h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 32px;
       color: var(--accent);
-      font-family: Orbitron, monospace;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-decoration: none;
     }
 
     .card {
@@ -57,75 +55,152 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 30px;
-      text-align: center;
     }
 
-    h1 {
-      font-family: Orbitron, monospace;
-      margin-bottom: 20px;
+    label {
+      display: block;
+      font-family: 'Orbitron', monospace;
+      font-size: 12px;
+      margin-bottom: 6px;
+      color: var(--accent);
     }
 
     input {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       font-size: 18px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: #000;
-      color: white;
       text-align: center;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: white;
+      margin-bottom: 16px;
     }
 
-    button {
+    .units {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .unit-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Orbitron', monospace;
+      cursor: pointer;
+    }
+
+    .unit-btn.active {
+      background: rgba(0,200,255,0.15);
+      color: white;
+      border-color: var(--accent);
+      box-shadow: var(--glow);
+    }
+
+    .convert-btn {
       width: 100%;
       padding: 14px;
-      background: var(--accent);
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
       border: none;
-      font-family: Orbitron, monospace;
-      font-weight: bold;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #0080cc);
       cursor: pointer;
-      margin-top: 10px;
+      margin-bottom: 20px;
     }
 
     .result {
-      margin-top: 20px;
+      text-align: center;
+      display: none;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .result p {
+      margin: 8px 0;
       font-size: 18px;
+    }
+
+    .back {
+      margin-top: 15px;
+      display: block;
+      text-align: center;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
     }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+<a href="index.html" class="back">← Back to Home</a>
 
-  <!-- BACK LINK -->
-  <div class="back">
-    <a href="index.html">← BACK TO HOME</a>
+<div class="container">
+  <div class="header">
+    <h1>Temperature Converter</h1>
   </div>
 
   <div class="card">
-    <h1>Temperature Converter</h1>
+    <label>Enter Temperature</label>
+    <input type="number" id="tempInput" placeholder="Enter value">
 
-    <input type="number" id="temp" placeholder="Enter Celsius" />
+    <div class="units">
+      <button class="unit-btn active" onclick="setUnit('C', this)">°C</button>
+      <button class="unit-btn" onclick="setUnit('F', this)">°F</button>
+      <button class="unit-btn" onclick="setUnit('K', this)">K</button>
+    </div>
 
-    <button onclick="convert()">CONVERT</button>
+    <button class="convert-btn" onclick="convert()">Convert</button>
 
-    <div class="result" id="result"></div>
+    <div class="result" id="result">
+      <p id="celsius"></p>
+      <p id="fahrenheit"></p>
+      <p id="kelvin"></p>
+    </div>
   </div>
-
 </div>
 
 <script>
+  let unit = 'C';
+
+  function setUnit(u, btn) {
+    unit = u;
+    document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
   function convert() {
-    const c = document.getElementById("temp").value;
-    if (c === "") {
-      document.getElementById("result").innerText = "Enter a value";
-      return;
+    const value = parseFloat(document.getElementById('tempInput').value);
+    if (isNaN(value)) return;
+
+    let C, F, K;
+
+    if (unit === 'C') {
+      C = value;
+      F = (C * 9/5) + 32;
+      K = C + 273.15;
+    } else if (unit === 'F') {
+      F = value;
+      C = (F - 32) * 5/9;
+      K = C + 273.15;
+    } else {
+      K = value;
+      C = K - 273.15;
+      F = (C * 9/5) + 32;
     }
-    const f = (c * 9/5) + 32;
-    document.getElementById("result").innerText =
-      c + "°C = " + f.toFixed(2) + "°F";
+
+    document.getElementById('celsius').textContent = `Celsius: ${C.toFixed(2)} °C`;
+    document.getElementById('fahrenheit').textContent = `Fahrenheit: ${F.toFixed(2)} °F`;
+    document.getElementById('kelvin').textContent = `Kelvin: ${K.toFixed(2)} K`;
+
+    document.getElementById('result').classList.add('show');
   }
 </script>
 
